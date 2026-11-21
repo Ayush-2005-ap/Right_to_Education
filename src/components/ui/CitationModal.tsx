@@ -50,9 +50,9 @@ export const CitationModal: React.FC<CitationModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="citation-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-primary-container/70 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-primary-container/70 p-3 sm:p-4 backdrop-blur-xs"
     >
-      <div className="bg-surface-container-lowest max-w-lg w-full rounded-[4px] border border-border-strong p-space-md sm:p-6 shadow-modal flex flex-col gap-space-sm animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-surface-container-lowest max-w-lg w-full max-h-[92vh] overflow-y-auto rounded-[4px] border border-border-strong p-4 sm:p-6 shadow-modal flex flex-col gap-space-sm animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
         <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
           <div className="flex items-center gap-2">

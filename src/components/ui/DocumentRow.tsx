@@ -132,7 +132,7 @@ export const DocumentRow: React.FC<DocumentRowProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-row lg:flex-col w-full gap-2 pt-1">
+          <div className="flex flex-col sm:flex-row lg:flex-col w-full gap-2 pt-1">
             <Button
               variant="primary"
               size="md"

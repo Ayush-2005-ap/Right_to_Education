@@ -8,7 +8,6 @@ import {
 import { Container } from '../components/ui/Container';
 import { SectionHeader } from '../components/ui/SectionHeader';
 import { Badge } from '../components/ui/Badge';
-import { Button } from '../components/ui/Button';
 
 export const Coalition25Page: React.FC = () => {
   return (
@@ -87,13 +86,12 @@ export const Coalition25Page: React.FC = () => {
             </p>
           </div>
 
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => alert('Contacting Coalition 25 Secretariat via info@righttoeducation.in')}
+          <a
+            href="mailto:info@righttoeducation.in?subject=Coalition%2025%20Network%20Inquiry"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-[2px] font-sans text-xs font-semibold hover:bg-primary-container transition-colors shrink-0 shadow-2xs"
           >
-            Connect with Secretariat
-          </Button>
+            <span>Connect with Secretariat (Email)</span>
+          </a>
         </div>
       </Container>
     </div>

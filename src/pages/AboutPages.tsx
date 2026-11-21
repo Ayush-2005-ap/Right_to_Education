@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {
   Users,
@@ -6,6 +6,7 @@ import {
   Mail,
   Phone,
   ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { SectionHeader } from '../components/ui/SectionHeader';
@@ -13,6 +14,7 @@ import { Button } from '../components/ui/Button';
 
 export const AboutPages: React.FC = () => {
   const location = useLocation();
+  const [messageSent, setMessageSent] = useState(false);
   const activeTab: 'vision' | 'partners' | 'team' | 'contact' = location.pathname.includes('/partners')
     ? 'partners'
     : location.pathname.includes('/platform-team')
@@ -221,21 +223,34 @@ export const AboutPages: React.FC = () => {
               <h3 className="font-serif text-headline-md font-bold text-primary">
                 Send a Message
               </h3>
-              <form onSubmit={(e) => { e.preventDefault(); alert('Message dispatched to secretariat.'); }} className="space-y-3">
-                <div>
-                  <label className="block text-xs font-semibold text-primary mb-1">Your Name</label>
-                  <input type="text" required className="w-full px-3 py-2 border border-border-subtle rounded-[4px] text-body-sm" />
+              {messageSent ? (
+                <div className="p-5 bg-surface-container-low rounded-[4px] border border-secondary text-center space-y-2">
+                  <CheckCircle2 className="w-8 h-8 text-secondary mx-auto" />
+                  <h4 className="font-serif text-headline-xs font-bold text-primary">Message Dispatched to Secretariat</h4>
+                  <p className="text-body-sm text-on-surface-variant max-w-sm mx-auto">
+                    Your inquiry has been received by our editorial team. We will review and respond via email within 2–3 working days.
+                  </p>
+                  <Button variant="outline" size="sm" onClick={() => setMessageSent(false)}>
+                    Send Another Message
+                  </Button>
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-primary mb-1">Email Address</label>
-                  <input type="email" required className="w-full px-3 py-2 border border-border-subtle rounded-[4px] text-body-sm" />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-primary mb-1">Message</label>
-                  <textarea rows={4} required className="w-full px-3 py-2 border border-border-subtle rounded-[4px] text-body-sm"></textarea>
-                </div>
-                <Button variant="primary" type="submit" size="sm">Send Message</Button>
-              </form>
+              ) : (
+                <form onSubmit={(e) => { e.preventDefault(); setMessageSent(true); }} className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-primary mb-1">Your Name</label>
+                    <input type="text" required className="w-full px-3 py-2 border border-border-subtle rounded-[4px] text-body-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-primary mb-1">Email Address</label>
+                    <input type="email" required className="w-full px-3 py-2 border border-border-subtle rounded-[4px] text-body-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-primary mb-1">Message</label>
+                    <textarea rows={4} required className="w-full px-3 py-2 border border-border-subtle rounded-[4px] text-body-sm"></textarea>
+                  </div>
+                  <Button variant="primary" type="submit" size="sm">Send Message</Button>
+                </form>
+              )}
             </div>
           </div>
         )}

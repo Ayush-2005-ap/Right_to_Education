@@ -4,10 +4,10 @@ export const Table = React.forwardRef<
   HTMLTableElement,
   React.TableHTMLAttributes<HTMLTableElement>
 >(({ className = '', ...props }, ref) => (
-  <div className="w-full overflow-x-auto rounded-[4px] border border-border-subtle bg-surface-container-lowest shadow-subtle">
+  <div className="w-full overflow-x-auto relative rounded-[4px] border border-border-subtle bg-surface-container-lowest shadow-subtle overscroll-x-contain">
     <table
       ref={ref}
-      className={`w-full caption-bottom text-body-sm text-left border-collapse ${className}`}
+      className={`w-full caption-bottom text-body-sm text-left border-collapse min-w-[580px] sm:min-w-full ${className}`}
       {...props}
     />
   </div>

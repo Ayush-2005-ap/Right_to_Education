@@ -95,26 +95,49 @@
   --shadow-modal: 0 8px 24px rgba(15, 41, 66, 0.14);
 }
 
-/* Base resets & typography foundation */
+/* ==========================================================================
+   BASE RESETS & VIEWPORT OVERFLOW SHIELD
+   ========================================================================== */
 html {
   font-family: var(--font-sans);
   color: var(--color-on-surface);
   background-color: var(--color-background);
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Box sizing protection across all descendants */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 /* Accessible focus styling */
 :focus-visible {
   outline: 2px solid var(--color-ochre);
   outline-offset: 2px;
+}
+
+/* Touch optimization for touchscreens */
+@media (pointer: coarse) {
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
 }
 
 /* Reduced motion preference */
@@ -127,62 +150,104 @@ body {
   }
 }
 
-/* Typographic scale helper classes */
+/* ==========================================================================
+   CROSS-BROWSER SCROLLBAR STYLING & NO-SCROLLBAR UTILITY
+   ========================================================================== */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Smooth momentum scrolling on iOS and mobile */
+.overflow-x-auto,
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Desktop scrollbars — restrained archival profile */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface-container-low);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-outline);
+  }
+}
+
+/* Safe Area Insets for Mobile devices with notches/bars */
+.safe-padding-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+}
+
+.safe-padding-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
+}
+
+/* ==========================================================================
+   FLUID TYPOGRAPHIC SCALE (CLAMP-BASED RESPONSIVENESS)
+   ========================================================================== */
 .font-display-lg {
   font-family: var(--font-serif);
-  font-size: 2.25rem;
-  line-height: 2.75rem;
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  line-height: clamp(2.25rem, 1.75rem + 2vw, 3.25rem);
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-@media (max-width: 640px) {
-  .font-display-lg {
-    font-size: 1.75rem;
-    line-height: 2.25rem;
-  }
-}
-
 .font-headline-xl {
   font-family: var(--font-serif);
-  font-size: 1.875rem;
-  line-height: 2.375rem;
+  font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  line-height: clamp(1.875rem, 1.5rem + 1.5vw, 2.625rem);
   font-weight: 700;
   letter-spacing: -0.015em;
 }
 
-@media (max-width: 640px) {
-  .font-headline-xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-}
-
 .font-headline-lg {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: clamp(1.25rem, 1.1rem + 1vw, 1.75rem);
+  line-height: clamp(1.625rem, 1.4rem + 1vw, 2.25rem);
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .font-headline-md {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  line-height: clamp(1.5rem, 1.3rem + 0.6vw, 1.875rem);
   font-weight: 600;
 }
 
 .font-headline-sm {
   font-family: var(--font-serif);
-  font-size: 1.125rem;
-  line-height: 1.5rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: clamp(1.375rem, 1.3rem + 0.3vw, 1.5rem);
+  font-weight: 600;
+}
+
+.font-headline-xs {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.375rem;
   font-weight: 600;
 }
 
 .font-body-lg {
   font-family: var(--font-sans);
-  font-size: 1.125rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
   line-height: 1.75rem;
   font-weight: 400;
 }
@@ -233,7 +298,16 @@ body {
   letter-spacing: 0.04em;
 }
 
-/* Print styles for long-form legal & statutory documents */
+.font-code-sm {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 0.9375rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   PRINT STYLES FOR LEGAL & STATUTORY DOCUMENTS
+   ========================================================================== */
 @media print {
   body {
     background: #ffffff !important;
@@ -242,4 +316,231 @@ body {
   .no-print {
     display: none !important;
   }
+  header, footer, .ticker-banner, button {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+}
+
+/* ==========================================================================
+   FONT SIZE ACCESSIBILITY CONTROLS
+   ========================================================================== */
+html.text-size-sm {
+  font-size: 87.5%;
+}
+
+html.text-size-md {
+  font-size: 100%;
+}
+
+html.text-size-lg {
+  font-size: 116%;
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE (WCAG 2.1 AAA & GIGW GOVERNMENT SPECIFICATION)
+   Pure deep black background (#000000), pure white foreground (#ffffff),
+   and high-visibility canary yellow (#ffff00) / cyan (#00ffff) accents.
+   ========================================================================== */
+html.high-contrast {
+  /* Override CSS color tokens */
+  --color-primary: #ffff00;
+  --color-primary-container: #000000;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #ffff00;
+  --color-primary-fixed: #ffff00;
+  --color-primary-fixed-dim: #ffd700;
+  --color-on-primary-fixed: #000000;
+
+  --color-secondary: #00ffff;
+  --color-secondary-container: #002222;
+  --color-on-secondary: #000000;
+  --color-on-secondary-container: #00ffff;
+  --color-secondary-fixed: #00ffff;
+  --color-secondary-fixed-dim: #00dddd;
+
+  --color-tertiary: #ffff00;
+  --color-tertiary-container: #333300;
+  --color-on-tertiary: #000000;
+  --color-saffron: #ffff00;
+  --color-ochre: #ffff00;
+
+  --color-background: #000000;
+  --color-surface: #000000;
+  --color-surface-dim: #111111;
+  --color-surface-bright: #000000;
+  --color-surface-container-lowest: #000000;
+  --color-surface-container-low: #0a0a0a;
+  --color-surface-container: #141414;
+  --color-surface-container-high: #202020;
+  --color-surface-container-highest: #2c2c2c;
+
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #f0f0f0;
+  --color-inverse-surface: #ffffff;
+  --color-inverse-on-surface: #000000;
+
+  --color-outline: #ffffff;
+  --color-outline-variant: #cccccc;
+  --color-border-subtle: #ffffff;
+  --color-border-strong: #ffff00;
+  --color-border-archival: #ffffff;
+
+  --color-error: #ff3333;
+  --color-error-container: #440000;
+  --color-on-error: #ffffff;
+  --color-success: #00ff66;
+  --color-success-container: #003311;
+  --color-on-success: #000000;
+
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.high-contrast body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Structural elements in high contrast */
+html.high-contrast header,
+html.high-contrast footer,
+html.high-contrast nav,
+html.high-contrast main,
+html.high-contrast section,
+html.high-contrast article,
+html.high-contrast div {
+  border-color: #ffffff !important;
+}
+
+html.high-contrast footer {
+  background-color: #000000 !important;
+  border-top-color: #ffff00 !important;
+}
+
+/* Background surfaces forced to high contrast dark */
+html.high-contrast .bg-surface-container-lowest,
+html.high-contrast .bg-surface-container-low,
+html.high-contrast .bg-surface-container,
+html.high-contrast .bg-surface-container-high,
+html.high-contrast .bg-surface-container-highest,
+html.high-contrast .bg-background,
+html.high-contrast .bg-surface,
+html.high-contrast .bg-white,
+html.high-contrast .bg-amber-50\/70,
+html.high-contrast .bg-primary-container,
+html.high-contrast .bg-primary {
+  background-color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+/* Typography & link high contrast rules */
+html.high-contrast .text-primary,
+html.high-contrast .text-on-surface,
+html.high-contrast .text-on-surface-variant,
+html.high-contrast .text-on-primary,
+html.high-contrast h1,
+html.high-contrast h2,
+html.high-contrast h3,
+html.high-contrast h4,
+html.high-contrast h5,
+html.high-contrast h6,
+html.high-contrast p,
+html.high-contrast span {
+  color: #ffffff !important;
+}
+
+html.high-contrast .text-secondary {
+  color: #00ffff !important;
+}
+
+html.high-contrast .text-ochre,
+html.high-contrast .text-saffron,
+html.high-contrast .text-primary-fixed,
+html.high-contrast .text-primary-fixed-dim {
+  color: #ffff00 !important;
+}
+
+html.high-contrast a {
+  text-decoration: underline !important;
+  text-decoration-color: #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+html.high-contrast a:hover,
+html.high-contrast a:focus {
+  color: #00ffff !important;
+  text-decoration-color: #00ffff !important;
+}
+
+/* Buttons in high contrast */
+html.high-contrast button {
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important;
+  background-color: #000000 !important;
+}
+
+html.high-contrast button:hover,
+html.high-contrast button:focus {
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+  box-shadow: 0 0 0 2px #ffff00 !important;
+}
+
+html.high-contrast .bg-ochre {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+}
+
+/* Input fields & controls */
+html.high-contrast input,
+html.high-contrast select,
+html.high-contrast textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast input:focus,
+html.high-contrast select:focus,
+html.high-contrast textarea:focus {
+  border-color: #ffff00 !important;
+  outline: 2px solid #ffff00 !important;
+}
+
+/* Badges & Tables in High Contrast */
+html.high-contrast .border-border-subtle,
+html.high-contrast .border-border-strong {
+  border-color: #ffffff !important;
+}
+
+html.high-contrast table,
+html.high-contrast th,
+html.high-contrast td {
+  border-color: #ffffff !important;
+}
+
+html.high-contrast th {
+  background-color: #111111 !important;
+  color: #ffff00 !important;
+}
+
+html.high-contrast td {
+  color: #ffffff !important;
+}
+
+html.high-contrast [role="dialog"] > div {
+  background-color: #000000 !important;
+  border: 3px solid #ffff00 !important;
+}
+
+html.high-contrast ::-webkit-scrollbar-track {
+  background: #000000 !important;
+}
+
+html.high-contrast ::-webkit-scrollbar-thumb {
+  background: #ffff00 !important;
 }

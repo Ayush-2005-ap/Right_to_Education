@@ -5,6 +5,8 @@ import {
   Phone,
   Building2,
   ArrowLeft,
+  Download,
+  BarChart3,
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Badge } from '../components/ui/Badge';
@@ -15,6 +17,14 @@ import { DocumentRow } from '../components/ui/DocumentRow';
 import { CitationModal } from '../components/ui/CitationModal';
 import { ALL_STATES_DATA } from '../data/statesData';
 import type { StateProfile } from '../data/statesData';
+import {
+  STATEWISE_ENROLMENT_1417,
+  STATEWISE_REIMBURSEMENT_1417,
+  STATEWISE_REIMBURSEMENT_2025,
+  STATEWISE_PRIVATE_SCHOOLS_2025,
+  STATEWISE_RECENT_INDICATORS,
+  STATEWISE_MASTER_RECORDS,
+} from '../data/statewiseEmpiricalData';
 
 // Map legacy slugs to canonical state data
 const SLUG_ALIASES: Record<string, string> = {
@@ -24,7 +34,7 @@ const SLUG_ALIASES: Record<string, string> = {
 
 export const StateDetailPage: React.FC = () => {
   const { stateSlug } = useParams<{ stateSlug: string }>();
-  const [activeTab, setActiveTab] = useState<'overview' | 'rules' | 'implementation' | 'judgments' | 'grievance'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'rules' | 'implementation' | 'judgments' | 'grievance' | 'empirical'>('overview');
   const [isCitationOpen, setIsCitationOpen] = useState(false);
 
   const canonicalSlug = stateSlug ? (SLUG_ALIASES[stateSlug.toLowerCase()] || stateSlug.toLowerCase()) : '';
@@ -60,6 +70,45 @@ export const StateDetailPage: React.FC = () => {
   }
 
   const isLegacySlug = stateSlug === 'orissa' || stateSlug === 'daman-and-diu';
+
+  // Find empirical data for this state
+  const stateNameLower = stateData.name.toLowerCase();
+
+  const enrolData = Object.entries(STATEWISE_ENROLMENT_1417).find(([s]) =>
+    s.toLowerCase() === stateNameLower ||
+    stateNameLower.includes(s.toLowerCase()) ||
+    s.toLowerCase().includes(stateNameLower)
+  )?.[1];
+
+  const reimb1417Data = Object.entries(STATEWISE_REIMBURSEMENT_1417).find(([s]) =>
+    s.toLowerCase() === stateNameLower ||
+    stateNameLower.includes(s.toLowerCase()) ||
+    s.toLowerCase().includes(stateNameLower)
+  )?.[1];
+
+  const reimb2025Data = Object.entries(STATEWISE_REIMBURSEMENT_2025).find(([s]) =>
+    s.toLowerCase() === stateNameLower ||
+    stateNameLower.includes(s.toLowerCase()) ||
+    s.toLowerCase().includes(stateNameLower)
+  )?.[1];
+
+  const privSchoolsData = Object.entries(STATEWISE_PRIVATE_SCHOOLS_2025).find(([s]) =>
+    s.toLowerCase() === stateNameLower ||
+    stateNameLower.includes(s.toLowerCase()) ||
+    s.toLowerCase().includes(stateNameLower)
+  )?.[1];
+
+  const recentInds = STATEWISE_RECENT_INDICATORS.filter((r) =>
+    r.stateName.toLowerCase() === stateNameLower ||
+    stateNameLower.includes(r.stateName.toLowerCase()) ||
+    r.stateName.toLowerCase().includes(stateNameLower)
+  );
+
+  const masterRecords = STATEWISE_MASTER_RECORDS.filter((r) =>
+    r.stateName.toLowerCase() === stateNameLower ||
+    stateNameLower.includes(r.stateName.toLowerCase()) ||
+    r.stateName.toLowerCase().includes(stateNameLower)
+  );
 
   return (
     <div className="py-8 space-y-8">
@@ -151,11 +200,20 @@ export const StateDetailPage: React.FC = () => {
               >
                 Cite State Desk
               </Button>
+
+              <a
+                href="/documents/RTE_Statewise_Research_2014-2026.xlsx"
+                download
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-surface-container text-xs font-semibold text-primary border border-border-subtle rounded-[2px] hover:bg-surface-container-high transition-colors"
+              >
+                <Download className="w-3.5 h-3.5 text-secondary" />
+                <span>State Research Dataset (.xlsx)</span>
+              </a>
             </div>
           </div>
         </div>
 
-        {/* 7 Confirmed Sections Navigation Tabs */}
+        {/* 6 Sections Navigation Tabs */}
         <div className="border-b border-border-subtle flex items-center gap-1 overflow-x-auto no-scrollbar mb-8 select-none">
           <button
             type="button"
@@ -192,6 +250,19 @@ export const StateDetailPage: React.FC = () => {
           </button>
           <button
             type="button"
+            onClick={() => setActiveTab('empirical')}
+            className={`px-4 py-2.5 font-sans text-label-md font-semibold border-b-2 whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+              activeTab === 'empirical'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-on-surface-variant hover:text-primary'
+            }`}
+          >
+            <BarChart3 className="w-4 h-4 text-ochre" />
+            <span>4. Empirical Research (2014–2026)</span>
+            <Badge variant="primary">New</Badge>
+          </button>
+          <button
+            type="button"
             onClick={() => setActiveTab('judgments')}
             className={`px-4 py-2.5 font-sans text-label-md font-semibold border-b-2 whitespace-nowrap transition-colors ${
               activeTab === 'judgments'
@@ -199,7 +270,7 @@ export const StateDetailPage: React.FC = () => {
                 : 'border-transparent text-on-surface-variant hover:text-primary'
             }`}
           >
-            4. Judgements
+            5. Judgements
           </button>
           <button
             type="button"
@@ -210,11 +281,13 @@ export const StateDetailPage: React.FC = () => {
                 : 'border-transparent text-on-surface-variant hover:text-primary'
             }`}
           >
-            5. Grievance Redressal (SCPCR)
+            6. Grievance Redressal (SCPCR)
           </button>
         </div>
 
-        {/* TAB CONTENT: 1. OVERVIEW */}
+        {/* ========================================================================= */}
+        {/* TAB 1: OVERVIEW */}
+        {/* ========================================================================= */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -285,23 +358,28 @@ export const StateDetailPage: React.FC = () => {
 
                 <div className="bg-surface-container-low p-5 rounded-[4px] border border-border-subtle">
                   <h4 className="font-serif text-headline-xs font-bold text-primary mb-2">
-                    Comparative Rules Matrix
+                    Official State Research Dataset
                   </h4>
                   <p className="text-body-sm text-on-surface-variant mb-3">
-                    Compare {stateData.name}&rsquo;s rule formulations across other States and Union Territories.
+                    Access historical enrolment, reimbursement claims, and private school statistics from the master research sheet.
                   </p>
-                  <Link to="/resources/rte-matrix">
-                    <Button variant="outline" size="sm" className="w-full">
-                      Open Rules Matrix →
-                    </Button>
-                  </Link>
+                  <a
+                    href="/documents/RTE_Statewise_Research_2014-2026.xlsx"
+                    download
+                    className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-primary text-white text-xs font-semibold rounded-[2px] hover:bg-primary-container transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download State XLSX (125 KB)</span>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* TAB CONTENT: 2. RULES */}
+        {/* ========================================================================= */}
+        {/* TAB 2: RULES */}
+        {/* ========================================================================= */}
         {activeTab === 'rules' && (
           <div className="space-y-4">
             <SectionHeader
@@ -322,29 +400,14 @@ export const StateDetailPage: React.FC = () => {
               fileSize="2.4 MB"
               isVerified={true}
               verificationLabel="Gazette Copy Verified"
-              onDownload={() => alert(`Initiating download for ${stateData.name} State Rules (Gazette PDF)`)}
-            />
-
-            <DocumentRow
-              title={`Executive Guidelines on Section 12(1)(c) Admission Protocols for ${stateData.name}`}
-              category="Executive Guidelines"
-              docType="Department Circular"
-              authority={`Directorate of Primary Education, ${stateData.name}`}
-              gazetteRef={`EDU-${stateData.slug.substring(0, 3).toUpperCase()}-2024-CIRC`}
-              date="Current Academic Session"
-              jurisdiction={stateData.name}
-              summary="Operational calendar, digital lottery norms, distance criteria verification, and income threshold certificate guidelines issued by the Directorate of School Education."
-              badgeTone="primary"
-              fileFormat="PDF"
-              fileSize="1.1 MB"
-              isVerified={true}
-              verificationLabel="Applicable AY 2025-26"
-              onDownload={() => alert(`Initiating download for ${stateData.name} Guidelines`)}
+              onDownload={() => window.open(stateData.portalUrl || '/documents/RTE_Statewise_Research_2014-2026.xlsx', '_blank')}
             />
           </div>
         )}
 
-        {/* TAB CONTENT: 3. IMPLEMENTATION */}
+        {/* ========================================================================= */}
+        {/* TAB 3: IMPLEMENTATION */}
+        {/* ========================================================================= */}
         {activeTab === 'implementation' && (
           <div className="space-y-6">
             <SectionHeader
@@ -409,7 +472,253 @@ export const StateDetailPage: React.FC = () => {
           </div>
         )}
 
-        {/* TAB CONTENT: 4. JUDGMENTS */}
+        {/* ========================================================================= */}
+        {/* TAB 4: EMPIRICAL RESEARCH (2014–2026 from File 07) */}
+        {/* ========================================================================= */}
+        {activeTab === 'empirical' && (
+          <div className="space-y-6">
+            <SectionHeader
+              title={`Empirical Research Datasets — ${stateData.name} (2014–2026)`}
+              category="Master Statewise Research Ingestion"
+              description={`Parsed from the official RTE Statewise Research compendium. Includes historical Section 12(1)(c) stock enrolments, reimbursement proposals vs approvals, private school counts, and recent 2026–2027 indicators.`}
+            />
+
+            {/* Historical Enrolment Strip */}
+            {enrolData && (
+              <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle shadow-card space-y-3">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <Badge variant="primary">Section 12(1)(c) Stock Enrolment</Badge>
+                  <span className="text-xs font-mono text-outline">Source: SSA AWP&amp;B / Lok Sabha Q.1602</span>
+                </div>
+                <h3 className="font-serif text-headline-sm font-bold text-primary">
+                  Historical Enrolment in Private Unaided Schools (2014–2017)
+                </h3>
+                <p className="font-sans text-xs text-on-surface-variant">
+                  {enrolData.definition}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-2">
+                  <div className="bg-surface-container-low p-4 rounded-[4px]">
+                    <span className="text-xs text-outline block">2014–15 Enrolment</span>
+                    <span className="font-mono text-headline-sm font-bold text-primary mt-1 block">
+                      {enrolData['2014-15'] || 'NA'}
+                    </span>
+                  </div>
+                  <div className="bg-surface-container-low p-4 rounded-[4px]">
+                    <span className="text-xs text-outline block">2015–16 Enrolment</span>
+                    <span className="font-mono text-headline-sm font-bold text-primary mt-1 block">
+                      {enrolData['2015-16'] || 'NA'}
+                    </span>
+                  </div>
+                  <div className="bg-surface-container-low p-4 rounded-[4px]">
+                    <span className="text-xs text-outline block">2016–17 Enrolment</span>
+                    <span className="font-mono text-headline-sm font-bold text-primary mt-1 block">
+                      {enrolData['2016-17'] || 'NA'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Reimbursement 2014-2017 (in Lakh) */}
+            {reimb1417Data && (
+              <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle shadow-card space-y-3">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <Badge variant="secondary">Reimbursement Norms (2014–2017)</Badge>
+                  <span className="text-xs font-mono text-outline">Amounts in ₹ Lakh</span>
+                </div>
+                <h3 className="font-serif text-headline-sm font-bold text-primary">
+                  Proposed vs Approved Reimbursement (2014–15 to 2016–17)
+                </h3>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left font-sans text-xs border border-border-subtle">
+                    <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle">
+                      <tr>
+                        <th className="p-2.5">Category</th>
+                        <th className="p-2.5 text-right">2014–15</th>
+                        <th className="p-2.5 text-right">2015–16</th>
+                        <th className="p-2.5 text-right">2016–17</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border-subtle font-mono">
+                      <tr>
+                        <td className="p-2.5 font-sans font-medium text-on-surface">Proposed Amount (₹ Lakh)</td>
+                        <td className="p-2.5 text-right">₹{reimb1417Data.prop_1415 || '0.00'}</td>
+                        <td className="p-2.5 text-right">₹{reimb1417Data.prop_1516 || '0.00'}</td>
+                        <td className="p-2.5 text-right">₹{reimb1417Data.prop_1617 || '0.00'}</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2.5 font-sans font-medium text-on-surface">Approved Amount (₹ Lakh)</td>
+                        <td className="p-2.5 text-right font-bold text-primary">₹{reimb1417Data.appr_1415 || '0.00'}</td>
+                        <td className="p-2.5 text-right font-bold text-primary">₹{reimb1417Data.appr_1516 || '0.00'}</td>
+                        <td className="p-2.5 text-right font-bold text-primary">₹{reimb1417Data.appr_1617 || '0.00'}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {reimb1417Data.remarks && (
+                  <div className="p-3 bg-surface-container-low rounded-[4px] border border-border-subtle text-xs text-on-surface-variant">
+                    <strong>Official Remarks:</strong> {reimb1417Data.remarks}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Reimbursement 2020-2025 (in Crore) */}
+            {reimb2025Data && (
+              <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle shadow-card space-y-3">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <Badge variant="primary">Recent Central Approvals (2020–2025)</Badge>
+                  <span className="text-xs font-mono text-outline">Source: Lok Sabha Q.2160 / RS Q.1148</span>
+                </div>
+                <h3 className="font-serif text-headline-sm font-bold text-primary">
+                  Reimbursement Claims &amp; Central Approvals (₹ Crore)
+                </h3>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 font-mono text-xs">
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2020–21 Claim</span>
+                    <span className="font-bold text-primary mt-1 block">₹{reimb2025Data.claim_2021 || '—'} Cr</span>
+                    <span className="text-[10px] text-secondary mt-1 block">Appr: ₹{reimb2025Data.appr_2021 || '—'} Cr</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2021–22 Claim</span>
+                    <span className="font-bold text-primary mt-1 block">₹{reimb2025Data.claim_2122 || '—'} Cr</span>
+                    <span className="text-[10px] text-secondary mt-1 block">Appr: ₹{reimb2025Data.appr_2122 || '—'} Cr</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2022–23 Claim</span>
+                    <span className="font-bold text-primary mt-1 block">₹{reimb2025Data.claim_2223 || '—'} Cr</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2023–24 Claim</span>
+                    <span className="font-bold text-primary mt-1 block">₹{reimb2025Data.claim_2324 || '—'} Cr</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2024–25 Claim</span>
+                    <span className="font-bold text-primary mt-1 block">₹{reimb2025Data.claim_2425 || '—'} Cr</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Private Schools Count 2020-2025 */}
+            {privSchoolsData && (
+              <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle shadow-card space-y-3">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <Badge variant="outline">Private Unaided Schools</Badge>
+                  <span className="text-xs font-mono text-outline">Source: Rajya Sabha UQ 533</span>
+                </div>
+                <h3 className="font-serif text-headline-sm font-bold text-primary">
+                  Recognized Private Unaided Schools in {stateData.name} (2020–2025)
+                </h3>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 font-mono text-xs">
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2020–21</span>
+                    <span className="font-bold text-primary text-sm mt-1 block">{privSchoolsData['2020-21'] || '—'}</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2021–22</span>
+                    <span className="font-bold text-primary text-sm mt-1 block">{privSchoolsData['2021-22'] || '—'}</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2022–23</span>
+                    <span className="font-bold text-primary text-sm mt-1 block">{privSchoolsData['2022-23'] || '—'}</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2023–24</span>
+                    <span className="font-bold text-primary text-sm mt-1 block">{privSchoolsData['2023-24'] || '—'}</span>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-[4px]">
+                    <span className="text-[10px] text-outline block">2024–25</span>
+                    <span className="font-bold text-primary text-sm mt-1 block">{privSchoolsData['2024-25'] || '—'}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Recent Indicators (e.g. 2026-27 Applications / Allotments) */}
+            {recentInds.length > 0 && (
+              <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle shadow-card space-y-3">
+                <div className="flex items-center gap-2">
+                  <Badge variant="high-priority">2026–2027 Admission Cycle Data</Badge>
+                  <span className="text-xs font-mono text-outline">NIC / State Department Disclosures</span>
+                </div>
+                <h3 className="font-serif text-headline-sm font-bold text-primary">
+                  Recent Admission Demand &amp; Allotment Indicators
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {recentInds.map((ri) => (
+                    <div key={ri.id} className="bg-surface-container-low p-4 rounded-[4px] space-y-1">
+                      <span className="text-xs font-mono text-secondary block">{ri.academicYear} · {ri.dataCategory}</span>
+                      <h4 className="font-serif text-headline-xs font-bold text-primary">{ri.indicator}</h4>
+                      <div className="font-mono text-headline-sm font-bold text-primary pt-1">
+                        {Number(ri.reportedData).toLocaleString('en-IN')}
+                      </div>
+                      {ri.sourceLink && (
+                        <div className="pt-2">
+                          <a
+                            href={ri.sourceLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+                          >
+                            <span>Official Source Reference</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Master Dataset Records Table */}
+            {masterRecords.length > 0 && (
+              <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle shadow-card space-y-3">
+                <h3 className="font-serif text-headline-sm font-bold text-primary">
+                  All Master Research Entries for {stateData.name} ({masterRecords.length} Records)
+                </h3>
+                <div className="overflow-x-auto max-h-80">
+                  <table className="w-full text-left font-sans text-xs border border-border-subtle">
+                    <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle sticky top-0">
+                      <tr>
+                        <th className="p-2.5">Year</th>
+                        <th className="p-2.5">Category</th>
+                        <th className="p-2.5">Indicator</th>
+                        <th className="p-2.5 text-right">Data</th>
+                        <th className="p-2.5">Source &amp; Verification</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border-subtle">
+                      {masterRecords.map((mr) => (
+                        <tr key={mr.id} className="hover:bg-surface-container-low transition-colors">
+                          <td className="p-2.5 font-mono">{mr.academicYear}</td>
+                          <td className="p-2.5 text-[11px]">{mr.dataCategory}</td>
+                          <td className="p-2.5 font-medium">{mr.indicator}</td>
+                          <td className="p-2.5 font-mono font-bold text-right text-primary">{mr.reportedData}</td>
+                          <td className="p-2.5 text-[11px] text-on-surface-variant max-w-xs">
+                            <div>{mr.sourceType}</div>
+                            {mr.researchNotes && <div className="text-[10px] text-outline italic">{mr.researchNotes}</div>}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* TAB 5: JUDGMENTS */}
+        {/* ========================================================================= */}
         {activeTab === 'judgments' && (
           <div className="space-y-4">
             <SectionHeader
@@ -430,12 +739,14 @@ export const StateDetailPage: React.FC = () => {
               fileSize="3.8 MB"
               isVerified={true}
               verificationLabel="Case Analysis Available"
-              onDownload={() => alert(`Opening judicial brief for ${stateData.name}`)}
+              onDownload={() => window.location.assign('/judgments')}
             />
           </div>
         )}
 
-        {/* TAB CONTENT: 5. GRIEVANCE */}
+        {/* ========================================================================= */}
+        {/* TAB 6: GRIEVANCE */}
+        {/* ========================================================================= */}
         {activeTab === 'grievance' && (
           <div className="bg-surface-container-lowest p-6 rounded-[4px] border border-border-subtle space-y-4">
             <SectionHeader
