@@ -12,12 +12,12 @@ interface RootLayoutProps {
 
 export const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-on-surface">
+    <div className="min-h-screen flex flex-col bg-background text-on-surface w-full max-w-full overflow-x-hidden">
       <Header />
       <TopAnnouncementBar />
       <KeyProvisionsToolbar />
       <Breadcrumbs />
-      <main id="main-content" className="flex-1 w-full">
+      <main id="main-content" className="flex-1 w-full max-w-full overflow-x-hidden">
         {children || <Outlet />}
       </main>
       <Footer />

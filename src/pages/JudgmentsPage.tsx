@@ -116,7 +116,7 @@ export const JudgmentsPage: React.FC = () => {
         </div>
 
         {/* View Mode Navigation Tabs */}
-        <div className="border-b border-border-subtle flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 select-none">
+        <div className="border-b border-border-subtle flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 select-none max-w-full min-w-0">
           <button
             type="button"
             onClick={() => setActiveTab('precedents')}

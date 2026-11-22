@@ -24,14 +24,17 @@ export const KeyProvisionsToolbar: React.FC = () => {
   return (
     <div
       aria-label="Key Provisions Quick Navigation"
-      className="w-full bg-surface-container-low border-b border-border-subtle py-2 select-none"
+      className="w-full max-w-full bg-surface-container-low border-b border-border-subtle py-2 select-none overflow-hidden"
     >
-      <Container className="flex items-center gap-2">
+      <Container className="flex items-center gap-2 max-w-full min-w-0">
         {/* Left Label */}
         <div className="flex items-center gap-1.5 shrink-0 pr-2 border-r border-border-strong text-primary">
-          <Bookmark className="w-3.5 h-3.5 text-secondary" aria-hidden="true" />
-          <span className="font-sans text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
+          <Bookmark className="w-3.5 h-3.5 text-secondary shrink-0" aria-hidden="true" />
+          <span className="font-sans text-[11px] font-bold uppercase tracking-wider whitespace-nowrap hidden sm:inline">
             {t('key_provisions_label', 'Key Provisions:')}
+          </span>
+          <span className="font-sans text-[11px] font-bold uppercase tracking-wider whitespace-nowrap sm:hidden">
+            {t('provisions_short_label', 'Provisions:')}
           </span>
         </div>
 
@@ -49,7 +52,7 @@ export const KeyProvisionsToolbar: React.FC = () => {
         {/* Scrollable Topics Row */}
         <div
           ref={scrollContainerRef}
-          className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-0.5"
+          className="flex-1 min-w-0 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-0.5"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {KEY_PROVISIONS_TOPICS.map((topic) => (

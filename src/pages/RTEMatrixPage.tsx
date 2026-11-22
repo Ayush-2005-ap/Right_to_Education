@@ -154,7 +154,7 @@ export const RTEMatrixPage: React.FC = () => {
             <span>← Swipe horizontally to view all columns</span>
             <span className="font-mono text-primary font-bold">37 States/UTs</span>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full max-w-full min-w-0">
             <Table>
               <TableHeader>
                 <TableRow>

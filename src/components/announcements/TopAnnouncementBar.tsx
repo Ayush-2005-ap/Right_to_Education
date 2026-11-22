@@ -57,9 +57,9 @@ export const TopAnnouncementBar: React.FC = () => {
     <>
       <div
         aria-label="Latest Releases and Announcements Ticker"
-        className="w-full bg-primary text-on-primary border-b border-border-strong/40 py-1.5 select-none transition-colors"
+        className="w-full max-w-full bg-primary text-on-primary border-b border-border-strong/40 py-1.5 select-none transition-colors overflow-hidden"
       >
-        <Container className="flex items-center justify-between gap-2 text-[12px] font-sans">
+        <Container className="flex items-center justify-between gap-2 text-[12px] font-sans max-w-full min-w-0">
           {/* Left Badge */}
           <div className="flex items-center gap-2 shrink-0">
             <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-[2px] bg-ochre text-white font-bold text-[11px] uppercase tracking-wider shadow-2xs">

@@ -77,7 +77,7 @@ Phone: [Insert Phone Number]`;
               You can copy, customize, and submit this application to your local District Education Officer (DEO) or Block Education Officer (BEO):
             </p>
 
-            <pre className="p-4 bg-surface-container-low rounded-[4px] border border-border-subtle font-mono text-code-md text-on-surface whitespace-pre-wrap leading-relaxed overflow-x-auto">
+            <pre className="p-4 bg-surface-container-low rounded-[4px] border border-border-subtle font-mono text-code-md text-on-surface whitespace-pre-wrap break-words leading-relaxed overflow-x-auto w-full max-w-full">
               {sampleTemplate}
             </pre>
           </div>

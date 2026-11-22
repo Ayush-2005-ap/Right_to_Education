@@ -165,12 +165,12 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
 
       {/* 2. SPOTLIGHT BREAKING BANNER */}
       {showHeroBanner && spotlightItem && (
-        <div className="bg-amber-50/70 border-b border-amber-200/80 p-3.5 sm:p-4.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-on-surface">
-          <div className="flex items-start gap-3">
+        <div className="bg-amber-50/70 border-b border-amber-200/80 p-3.5 sm:p-4.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-on-surface overflow-hidden">
+          <div className="flex items-start gap-3 min-w-0 flex-1">
             <span className="p-1.5 rounded-[3px] bg-ochre text-white shrink-0 mt-0.5">
               <Bell className="w-4 h-4 animate-bounce" aria-hidden="true" />
             </span>
-            <div>
+            <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2 mb-0.5">
                 <span className="px-1.5 py-0.2 bg-ochre text-white rounded-[2px] font-sans text-[10px] font-bold uppercase tracking-wider">
                   {t('statutory_highlight', 'STATUTORY HIGHLIGHT')}
@@ -183,21 +183,22 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
                   Published: {spotlightItem.date}
                 </span>
               </div>
-              <h3 className="font-serif text-body-lg font-bold text-primary hover:text-ochre cursor-pointer transition-colors"
+              <h3 className="font-serif text-body-md sm:text-body-lg font-bold text-primary hover:text-ochre cursor-pointer transition-colors break-words"
                 onClick={() => setSelectedItem(spotlightItem)}
               >
                 {spotlightItem.title}
               </h3>
-              <p className="font-sans text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">
+              <p className="font-sans text-body-sm text-on-surface-variant line-clamp-2 mt-0.5 break-words">
                 {spotlightItem.summary}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end sm:justify-start pt-1 sm:pt-0">
             <Button
               variant="urgent"
               size="sm"
+              className="w-full sm:w-auto"
               onClick={() => setSelectedItem(spotlightItem)}
               rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
             >
@@ -210,8 +211,8 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({
       {/* 3. CONTROLS: CATEGORY TABS & SEARCH / TOGGLE */}
       <div className="p-4 sm:p-5 border-b border-border-subtle bg-surface-container-low/50 space-y-3">
         {/* Category Tabs */}
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+        <div className="flex items-center justify-between gap-3 flex-wrap max-w-full min-w-0">
+          <div className="w-full sm:w-auto flex-1 min-w-0 max-w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
             {[
               { id: 'all', label: t('tab_all', 'All Updates'), count: countsByCategory.all },
               { id: 'release', label: t('tab_releases', 'New Releases'), count: countsByCategory.release },

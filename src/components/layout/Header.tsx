@@ -223,21 +223,21 @@ export const Header: React.FC = () => {
       </div>
 
       {/* 2. MAIN BRAND HEADER CANVAS */}
-      <div className="w-full bg-surface-container-lowest py-3 sm:py-4 border-b border-border-subtle">
-        <Container className="flex items-center justify-between gap-4">
+      <div className="w-full bg-surface-container-lowest py-3 sm:py-4 border-b border-border-subtle overflow-hidden">
+        <Container className="flex items-center justify-between gap-2.5 sm:gap-4 max-w-full">
           {/* Logo & Title Lockup */}
-          <Link to="/" className="flex items-center gap-3 sm:gap-4 shrink-0 group">
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1 sm:flex-initial group">
             <img
               src="/rte-logo.png"
               alt="Right to Education India Institutional Wordmark"
-              className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              className="h-8 sm:h-11 w-auto object-contain shrink-0 transition-transform group-hover:scale-[1.02]"
             />
-            <div className="h-9 w-px bg-border-strong hidden sm:block" aria-hidden="true" />
-            <div className="flex flex-col">
-              <span className="font-serif text-[17px] sm:text-headline-sm font-bold text-primary leading-tight group-hover:text-secondary transition-colors">
+            <div className="h-8 sm:h-9 w-px bg-border-strong hidden sm:block shrink-0" aria-hidden="true" />
+            <div className="flex flex-col min-w-0">
+              <span className="font-serif text-[15px] sm:text-headline-sm font-bold text-primary leading-tight group-hover:text-secondary transition-colors truncate">
                 {t('portal_title', 'Right to Education India')}
               </span>
-              <span className="font-sans text-[11px] sm:text-label-sm text-on-surface-variant font-medium tracking-tight">
+              <span className="font-sans text-[10px] sm:text-label-sm text-on-surface-variant font-medium tracking-tight truncate">
                 {t('portal_subtitle', 'National Legal & Policy Portal · Article 21-A')}
               </span>
             </div>
@@ -279,7 +279,7 @@ export const Header: React.FC = () => {
               size="sm"
               leftIcon={<MessageSquare className="w-3.5 h-3.5" />}
               onClick={() => navigate('/ask-a-question')}
-              className="hidden sm:inline-flex"
+              className="hidden md:inline-flex"
             >
               {t('ask_question', 'Ask a Question')}
             </Button>

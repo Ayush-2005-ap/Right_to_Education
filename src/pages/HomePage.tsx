@@ -23,7 +23,7 @@ export const HomePage: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="py-6 sm:py-8 space-y-10">
+    <div className="py-6 sm:py-8 space-y-10 w-full max-w-full overflow-hidden">
       <Container>
         {/* NEW RELEASES & ANNOUNCEMENTS TOP SECTION */}
         <div className="mb-8">

@@ -214,7 +214,7 @@ export const StateDetailPage: React.FC = () => {
         </div>
 
         {/* 6 Sections Navigation Tabs */}
-        <div className="border-b border-border-subtle flex items-center gap-1 overflow-x-auto no-scrollbar mb-8 select-none">
+        <div className="border-b border-border-subtle flex items-center gap-1 overflow-x-auto no-scrollbar mb-8 select-none max-w-full min-w-0">
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
@@ -531,7 +531,7 @@ export const StateDetailPage: React.FC = () => {
                   Proposed vs Approved Reimbursement (2014–15 to 2016–17)
                 </h3>
 
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto w-full max-w-full min-w-0">
                   <table className="w-full text-left font-sans text-xs border border-border-subtle">
                     <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle">
                       <tr>
@@ -684,7 +684,7 @@ export const StateDetailPage: React.FC = () => {
                 <h3 className="font-serif text-headline-sm font-bold text-primary">
                   All Master Research Entries for {stateData.name} ({masterRecords.length} Records)
                 </h3>
-                <div className="overflow-x-auto max-h-80">
+                <div className="overflow-x-auto max-h-80 w-full max-w-full min-w-0">
                   <table className="w-full text-left font-sans text-xs border border-border-subtle">
                     <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle sticky top-0">
                       <tr>

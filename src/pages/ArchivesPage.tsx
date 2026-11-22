@@ -82,7 +82,7 @@ export const ArchivesPage: React.FC = () => {
         />
 
         {/* Tab Navigation */}
-        <div className="border-b border-border-subtle flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 select-none">
+        <div className="border-b border-border-subtle flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 select-none max-w-full min-w-0">
           <Link
             to="/archives"
             className={`px-4 py-2.5 font-sans text-label-md font-semibold border-b-2 whitespace-nowrap transition-colors flex items-center gap-2 ${

@@ -75,7 +75,7 @@ export const ResourcesPage: React.FC = () => {
         />
 
         {/* TOP TAB NAVIGATION */}
-        <div className="border-b border-border-subtle flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 select-none">
+        <div className="border-b border-border-subtle flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 select-none max-w-full min-w-0">
           <button
             type="button"
             onClick={() => setActiveTab('central')}
@@ -170,7 +170,7 @@ export const ResourcesPage: React.FC = () => {
                 Total reported numbers of children admitted to or studying in private unaided schools under Section 12(1)(c) nationwide. <em>Important:</em> These figures represent total stock enrolment (children studying), not exclusively new annual entry admissions.
               </p>
 
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto w-full max-w-full min-w-0">
                 <table className="w-full text-left font-sans text-body-sm border border-border-subtle">
                   <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle">
                     <tr>
@@ -228,7 +228,7 @@ export const ResourcesPage: React.FC = () => {
                   <span className="text-xs font-mono text-outline">Total Approved: ₹2,84,098.18 Lakh</span>
                 </div>
 
-                <div className="overflow-x-auto max-h-96">
+                <div className="overflow-x-auto max-h-96 w-full max-w-full min-w-0">
                   <table className="w-full text-left font-sans text-body-sm border border-border-subtle">
                     <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle sticky top-0">
                       <tr>
@@ -354,7 +354,7 @@ export const ResourcesPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="overflow-x-auto max-h-[500px]">
+              <div className="overflow-x-auto max-h-[500px] w-full max-w-full min-w-0">
                 <table className="w-full text-left font-sans text-xs border border-border-subtle">
                   <thead className="bg-surface-container-low font-semibold text-primary border-b border-border-subtle sticky top-0">
                     <tr>
